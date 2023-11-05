@@ -59,7 +59,7 @@ prior = measure/trapz(T,measure);
 % Likelihood function
 likelihood = zeros(n+1, length(T));
 for xAux = 1:n+1
-    likelihood(xAux,:) = sparse(exp(-r(xAux)./T-n*log(1+exp(-1./T))+nCkLogJesus(n,r(xAux))));
+    likelihood(xAux,:) = sparse(exp(-r(xAux)./T-n*log(1+exp(-1./T))+ncklog(n,r(xAux))));
 end
 
 %% Simulation
@@ -107,7 +107,7 @@ locEst = zeros(1, mu); loc_err = zeros(1, mu);
 for runs = 1:mu
         
     % Likelihood, joint, evidence and posterior functions
-    joint = prob_temp.*likelihood(outcomesIndex(runs), :); % joint probability
+    joint = prob_temp.*likelihood(outcomes_index(runs), :); % joint probability
     evidence = trapz(T,joint); % normalisation of Bayes theorem
     
     if evidence > 1e-16
@@ -124,12 +124,12 @@ for runs = 1:mu
     opt_est(runs) = exp(opt_log_est); % estimator in Eq.(6)
     
     % Optimal uncertainty
-    opt_err(runs) = trapz(T, aux.*log(T)) - optLogEst^2;
+    opt_err(runs) = trapz(T, aux.*log(T)) - opt_log_est^2;
     
     % Local theory
     local_point = T(index_real) - 1;
-    locEst(runs) = localPoint+4*localPoint^2*mean(outcomes(1:runs))*cosh(1/(2*localPoint))^2/n - localPoint^2*(1+exp(-1/localPoint));   
-    loc_err(runs) = 2*localPoint^2*cosh(1/(2*localPoint))/sqrt(n*runs);
+    loc_est(runs) = local_point+4*local_point^2*mean(outcomes(1:runs))*cosh(1/(2*local_point))^2/n - local_point^2*(1+exp(-1/local_point));   
+    loc_err(runs) = 2*local_point^2*cosh(1/(2*local_point))/sqrt(n*runs);
     
 end
 opt_err_bar = opt_est.*sqrt(opt_err);

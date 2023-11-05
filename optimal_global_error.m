@@ -54,7 +54,7 @@ log_info = 0;
 for index = 1:length(r)
        
     % Likelihood, joint, evidence and posterior functions
-    fermion_likelihood = sparse(exp(-r(index)./T-n*log(1 + exp(-1./T)) + nCkLog(n,r(index)))); 
+    fermion_likelihood = sparse(exp(-r(index)./T-n*log(1 + exp(-1./T)) + ncklog(n,r(index)))); 
     joint = prior.*fermion_likelihood;    
     evidence = trapz(T, joint);
 
